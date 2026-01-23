@@ -1550,14 +1550,12 @@ async def text_handler(bot: Client, m: Message):
                 response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
                 url   = response.json()['url']
 
-            PW_API = "https://anonymouspwplayerr-c96de7802811.herokuapp.com/pw"
-
-elif "childId" in url and "parentId" in url:
-    url = f"{PW_API}?url={url}&token={pwtoken}"
-
-elif "d1d34p8vz63oiq" in url or "sec1.pw.live" in url:
-    url = f"{PW_API}?url={url}&token={pwtoken}"
-                
+            elif "childId" in url and "parentId" in url:
+                url = f"https://anonymouspwplayerr-c96de7802811.herokuapp.com/pw?url={url}&token={pw_token}"
+                           
+            elif "d1d34p8vz63oiq" in url or "sec1.pw.live" in url:
+                vid_id =  url.split('/')[-2]
+                url = f"https://anonymouspwplayerr-c96de7802811.herokuapp.com/pw?url={url}&token={pw_token}"
             if ".pdf*" in url:
                 url = f"https://dragoapi.vercel.app/pdf/{url}"
             
