@@ -1555,7 +1555,7 @@ async def text_handler(bot: Client, m: Message):
                            
             elif "d1d34p8vz63oiq" in url or "sec1.pw.live" in url:
                 vid_id =  url.split('/')[-2]
-                url = f"https://anonymouspwplayer-b99f57957198.herokuapp.com/pw?url={url}?token={raw_text4}"
+                url = f"https://anonymouspwplayerr-c96de7802811.herokuapp.com/pw?url={url}&token={pw_token}"
                 
             if ".pdf*" in url:
                 url = f"https://dragoapi.vercel.app/pdf/{url}"
