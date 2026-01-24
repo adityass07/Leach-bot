@@ -1177,7 +1177,7 @@ async def txt_handler(bot: Client, m: Message):
 
             #elif "d1d34p8vz63oiq" in url or "sec1.pw.live" in url:
             elif "childId" in url and "parentId" in url:
-                url = f"https://anonymouspwplayer-0e5a3f512dec.herokuapp.com/pw?url={url}&token={pwtoken}"
+                url = f"https://anonymouspwplayerr-c96de7802811.herokuapp.com/pw?url={url}&token={pw_token}"
                            
             if ".pdf*" in url:
                 url = f"https://dragoapi.vercel.app/pdf/{url}"
