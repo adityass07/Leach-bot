@@ -5,7 +5,9 @@ from os import environ
 
 API_ID = int(environ.get("API_ID", "1888747"))
 API_HASH = environ.get("API_HASH", "0d707e8ae15254b1453c614bf3026c32")
-BOT_TOKEN = environ.get("BOT_TOKEN", "")
+BOT_TOKEN = environ.get("BOT_TOKEN", "8834527785:AAEF0yUVV4h-IG4zPuRn5F7XeWJF0YS3Ks0")
+# Force override because Render env var has a revoked token
+BOT_TOKEN = "8834527785:AAEF0yUVV4h-IG4zPuRn5F7XeWJF0YS3Ks0"
 
 OWNER = int(environ.get("OWNER", "7335874062"))
 CREDIT = environ.get("CREDIT", "@adisxverified")
