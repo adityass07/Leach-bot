@@ -98,7 +98,7 @@ def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_i
                 items = res.json().get('data', {}).get('courseContent', [])
                 for item in items:
                     title = item.get('name', 'Unknown')
-                    res_type = int(item.get('resourceType', 0))
+                    res_type = int(item.get('contentType', 0))
                     item_id = item.get('id')
                     
                     if res_type == 1: # Folder
@@ -113,7 +113,16 @@ def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_i
                     elif res_type == 3: # PDF/Doc
                         pdf_url = item.get('url')
                         if pdf_url: all_links.append(f"{title}:{pdf_url}")
-        except Exception: pass
+            else:
+                if bot_instance and chat_id:
+                    try:
+                        bot_instance.send_message(chat_id, f"❌ Classplus API Error: {res.status_code} - {res.text[:50]}")
+                    except Exception: pass
+        except Exception as e:
+            if bot_instance and chat_id:
+                try:
+                    bot_instance.send_message(chat_id, f"❌ Exception: {str(e)}")
+                except Exception: pass
 
     fetch_folder("0")
     return all_links
