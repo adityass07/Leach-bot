@@ -1736,10 +1736,10 @@ async def text_handler(bot: Client, m: Message):
                         url = data['url']
                     else:
                         await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
-                        continue
+                        return
                 except Exception as e:
                     await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
-                    continue  
+                    return  
            
             elif 'videos.classplusapp' in url:
                 try:
@@ -1749,10 +1749,10 @@ async def text_handler(bot: Client, m: Message):
                         url = data['url']
                     else:
                         await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
-                        continue
+                        return
                 except Exception as e:
                     await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
-                    continue
+                    return
             
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{raw_text4}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
@@ -1764,10 +1764,10 @@ async def text_handler(bot: Client, m: Message):
                         url = data['url']
                     else:
                         await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
-                        continue
+                        return
                 except Exception as e:
                     await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
-                    continue
+                    return
 
             elif "classplusapp" in url:
                 try:
