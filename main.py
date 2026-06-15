@@ -1168,17 +1168,45 @@ async def txt_handler(bot: Client, m: Message):
             elif "tencdn.classplusapp" in url:
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{cptoken}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
-                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
-                url = response.json()['url']  
+                try:
+                    response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue  
            
             elif 'videos.classplusapp' in url:
-                url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': f'{cptoken}'}).json()['url']
+                try:
+                    response = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': f'{cptoken}'})
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue
             
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{cptoken}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
-                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
-                url   = response.json()['url']
+                try:
+                    response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue
 
             elif "classplusapp" in url:
                 try:
@@ -1686,17 +1714,45 @@ async def text_handler(bot: Client, m: Message):
             elif "tencdn.classplusapp" in url:
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{raw_text4}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
-                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
-                url = response.json()['url']  
+                try:
+                    response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue  
            
             elif 'videos.classplusapp' in url:
-                url = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': f'{raw_text4}'}).json()['url']
+                try:
+                    response = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers={'x-access-token': f'{raw_text4}'})
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue
             
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{raw_text4}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
-                response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
-                url   = response.json()['url']
+                try:
+                    response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
+                    data = response.json()
+                    if 'url' in data:
+                        url = data['url']
+                    else:
+                        await m.reply_text(f"❌ Classplus API Error for {name}:\n{data}\n\nMake sure you provided a valid Classplus Token instead of /d!")
+                        continue
+                except Exception as e:
+                    await m.reply_text(f"❌ Classplus Request Error for {name}: {str(e)}")
+                    continue
 
             elif "classplusapp" in url:
                 try:
