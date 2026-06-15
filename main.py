@@ -1519,6 +1519,8 @@ import json
 
 @bot.on_message(filters.regex(r"^eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$") & filters.private)
 async def handle_classplus_token_testing(client, message: Message):
+    global processing_request
+    if processing_request: return
     token = message.text.strip()
     try:
         msg = await message.reply_text("🔄 Processing ClassPlus Token...")
@@ -1556,6 +1558,8 @@ async def handle_classplus_token_testing(client, message: Message):
 
 @bot.on_message(filters.regex(r"^\s*,?\s*(\d+)\s*$") & filters.private)
 async def handle_classplus_batch_extraction(client, message: Message):
+    global processing_request
+    if processing_request: return
     batch_id = message.matches[0].group(1)
     
     token = None
