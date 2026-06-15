@@ -1501,7 +1501,7 @@ async def handle_classplus_token_testing(client, message: Message):
             await message.reply_text(f"❌ Error processing token: {str(e)}")
 
 
-@bot.on_message(filters.regex(r"^,(\d+)") & filters.private)
+@bot.on_message(filters.regex(r"^\s*,?\s*(\d+)\s*$") & filters.private)
 async def handle_classplus_batch_extraction(client, message: Message):
     batch_id = message.matches[0].group(1)
     
