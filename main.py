@@ -1501,6 +1501,52 @@ async def handle_classplus_token_testing(client, message: Message):
             await message.reply_text(f"❌ Error processing token: {str(e)}")
 
 
+@bot.on_message(filters.regex(r"^,(\d+)") & filters.private)
+async def handle_classplus_batch_extraction(client, message: Message):
+    batch_id = message.matches[0].group(1)
+    
+    token = None
+    org_code = "UNKNOWN"
+    
+    if message.reply_to_message and message.reply_to_message.text:
+        text = message.reply_to_message.text
+        lines = text.split('\n')
+        for line in lines:
+            if "eyJ" in line:
+                token = line.replace("`", "").strip()
+            if "ORG :" in line:
+                org_code = line.split("ORG :")[1].strip().replace("**", "")
+                
+    if not token:
+        await message.reply_text("❌ Please reply to the message containing your ClassPlus Token and ORG Code.")
+        return
+        
+    msg = await message.reply_text(f"🔄 Extracting Batch ID: {batch_id}...\nThis may take a few minutes.")
+    
+    try:
+        import classplus_api
+        import os
+        links = classplus_api.extract_batch_links(token, batch_id, org_code, client, message.chat.id)
+        
+        if not links:
+            await msg.edit_text("❌ No videos or PDFs found in this batch, or extraction failed.")
+            return
+            
+        txt_file = os.path.join("downloads", f"{batch_id}_classplus.txt")
+        os.makedirs(os.path.dirname(txt_file), exist_ok=True)
+        
+        with open(txt_file, 'w', encoding='utf-8') as f:
+            f.write("\n".join(links))
+            
+        await message.reply_document(
+            document=txt_file,
+            caption=f"✅ **Batch Extraction Complete!**\n**Batch ID:** `{batch_id}`\n**Total Links:** `{len(links)}`\n\n<blockquote>You can now download your content! 📥</blockquote>"
+        )
+        await msg.delete()
+        os.remove(txt_file)
+    except Exception as e:
+        await msg.edit_text(f"❌ Error during extraction: {str(e)}")
+
 @bot.on_message(filters.regex(r"^\s*https?://.*\*.*\*\s*") & filters.private)
 async def handle_appx_login_testing(client, message: Message):
     text = message.text.strip()

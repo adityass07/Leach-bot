@@ -77,44 +77,44 @@ def classplus_get_courses(token, org_code=""):
 def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_id=None):
     base_url = "https://api.classplusapp.com/v2"
     all_links = []
-    
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
+    import cloudscraper
     
     headers = {
         'User-Agent': 'okhttp/4.9.1',
         'x-access-token': token,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'api-version': '50'
     }
     if org_code:
         headers['orgcode'] = org_code
 
+    scraper = cloudscraper.create_scraper()
+
     def fetch_folder(folder_id, path_prefix=""):
         url = f"{base_url}/course/content/get?courseId={course_id}&folderId={folder_id}"
         try:
-            req = urllib.request.Request(url, headers=headers)
-            with urllib.request.urlopen(req, context=ctx, timeout=10) as res:
-                if res.status == 200:
-                    items = json.loads(res.read().decode('utf-8')).get('data', {}).get('courseContent', [])
-                    for item in items:
-                        title = item.get('name', 'Unknown')
-                        res_type = int(item.get('resourceType', 0))
-                        item_id = item.get('id')
-                        
-                        if res_type == 1: # Folder
-                            if bot_instance and chat_id:
-                                try:
-                                    bot_instance.send_message(chat_id, f"📂 Scanning folder: {title}")
-                                except Exception: pass
-                            fetch_folder(item_id, path_prefix + title + " > ")
-                        elif res_type == 2: # Video
-                            vid_url = item.get('url')
-                            if vid_url: all_links.append(f"{path_prefix}{title}\n↳ Video: {vid_url}\n")
-                        elif res_type == 3: # PDF/Doc
-                            pdf_url = item.get('url')
-                            if pdf_url: all_links.append(f"{path_prefix}{title}\n↳ PDF: {pdf_url}\n")
+            res = scraper.get(url, headers=headers, timeout=15)
+            if res.status_code == 200:
+                items = res.json().get('data', {}).get('courseContent', [])
+                for item in items:
+                    title = item.get('name', 'Unknown')
+                    res_type = int(item.get('resourceType', 0))
+                    item_id = item.get('id')
+                    
+                    if res_type == 1: # Folder
+                        if bot_instance and chat_id:
+                            try:
+                                bot_instance.send_message(chat_id, f"📂 Scanning folder: {title}")
+                            except Exception: pass
+                        fetch_folder(item_id, path_prefix + title + " > ")
+                    elif res_type == 2: # Video
+                        vid_url = item.get('url')
+                        if vid_url: all_links.append(f"{title}:{vid_url}")
+                    elif res_type == 3: # PDF/Doc
+                        pdf_url = item.get('url')
+                        if pdf_url: all_links.append(f"{title}:{pdf_url}")
         except Exception: pass
 
     fetch_folder("0")
+    return all_links
     return all_links
