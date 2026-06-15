@@ -1102,7 +1102,7 @@ async def txt_handler(bot: Client, m: Message):
         else:
             thumb = raw_text6
 
-    await editable.edit("__**⚠️Provide the Channel ID or send /d__\n\n<blockquote><i>🔹 Make me an admin to upload.\n🔸Send /id in your channel to get the Channel ID.\n\nExample: Channel ID = -100XXXXXXXXXXX</i></blockquote>\n**")
+    await editable.edit("__**⚠️Provide the Channel ID or send /d__\n\n<blockquote><i>🔹 Make me an admin to upload.\n🔸Send /id in your channel to get the Channel ID.\n\nExample: Channel ID = -100XXXXXXXXXXX\n\n(❌ DO NOT ENTER YOUR CLASSPLUS TOKEN HERE! Token will be asked in the next step!)</i></blockquote>\n**")
     try:
         input7: Message = await bot.listen(editable.chat.id, timeout=20)
         raw_text7 = input7.text
@@ -1110,10 +1110,16 @@ async def txt_handler(bot: Client, m: Message):
     except asyncio.TimeoutError:
         raw_text7 = '/d'
 
+    if raw_text7.startswith("ey"):
+        raw_text7 = '/d'
+
     if "/d" in raw_text7:
         channel_id = m.chat.id
     else:
-        channel_id = raw_text7    
+        try:
+            channel_id = int(raw_text7)
+        except ValueError:
+            channel_id = raw_text7
 
     await editable.edit(f"**Enter 𝐏𝐖/𝐂𝐖/𝐂𝐏 Working Token For 𝐌𝐏𝐃 𝐔𝐑𝐋 or send /d**\n\n<blockquote>If you are downloading Classplus, send your JWT token here!</blockquote>")
     try:
