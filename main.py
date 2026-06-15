@@ -1141,9 +1141,10 @@ async def txt_handler(bot: Client, m: Message):
 
     if token_text != '/d':
         global cwtoken, cptoken, pwtoken
-        cwtoken = token_text
-        cptoken = token_text
-        pwtoken = token_text
+        token_clean = token_text.strip()
+        cwtoken = token_clean
+        cptoken = token_clean
+        pwtoken = token_clean
 
     await editable.delete()
 
@@ -1204,7 +1205,7 @@ async def txt_handler(bot: Client, m: Message):
                 keys_string = " ".join([f"--key {key}" for key in keys])
 
             elif "tencdn.classplusapp" in url:
-                headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
+                headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
                 c_org = get_orgcode_from_token(cptoken)
                 if c_org: headers['orgcode'] = c_org
                 params = {"url": f"{url}"}
@@ -1222,7 +1223,7 @@ async def txt_handler(bot: Client, m: Message):
            
             elif 'videos.classplusapp' in url:
                 try:
-                    headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
+                    headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
                     c_org = get_orgcode_from_token(cptoken)
                     if c_org: headers['orgcode'] = c_org
                     response = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers=headers)
@@ -1237,7 +1238,7 @@ async def txt_handler(bot: Client, m: Message):
                     continue
             
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
-                headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
+                headers = {'x-access-token': f'{cptoken}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
                 c_org = get_orgcode_from_token(cptoken)
                 if c_org: headers['orgcode'] = c_org
                 params = {"url": f"{url}"}
@@ -1761,8 +1762,8 @@ async def text_handler(bot: Client, m: Message):
                 keys_string = " ".join([f"--key {key}" for key in keys])
 
             elif "tencdn.classplusapp" in url:
-                headers = {'x-access-token': f'{raw_text4}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
-                c_org = get_orgcode_from_token(raw_text4)
+                headers = {'x-access-token': f'{raw_text4.strip()}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
+                c_org = get_orgcode_from_token(raw_text4.strip())
                 if c_org: headers['orgcode'] = c_org
                 params = {"url": f"{url}"}
                 try:
@@ -1779,8 +1780,8 @@ async def text_handler(bot: Client, m: Message):
            
             elif 'videos.classplusapp' in url:
                 try:
-                    headers = {'x-access-token': f'{raw_text4}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
-                    c_org = get_orgcode_from_token(raw_text4)
+                    headers = {'x-access-token': f'{raw_text4.strip()}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
+                    c_org = get_orgcode_from_token(raw_text4.strip())
                     if c_org: headers['orgcode'] = c_org
                     response = requests.get(f'https://api.classplusapp.com/cams/uploader/video/jw-signed-url?url={url}', headers=headers)
                     data = response.json()
@@ -1794,8 +1795,8 @@ async def text_handler(bot: Client, m: Message):
                     return
             
             elif 'media-cdn.classplusapp.com' in url or 'media-cdn-alisg.classplusapp.com' in url or 'media-cdn-a.classplusapp.com' in url: 
-                headers = {'x-access-token': f'{raw_text4}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'User-Agent': 'okhttp/4.9.1'}
-                c_org = get_orgcode_from_token(raw_text4)
+                headers = {'x-access-token': f'{raw_text4.strip()}', 'api-version': '50', 'app-version': '1.4.152.1', 'device-type': 'ANDROID', 'device-id': 'dummy-id', 'User-Agent': 'okhttp/4.9.1'}
+                c_org = get_orgcode_from_token(raw_text4.strip())
                 if c_org: headers['orgcode'] = c_org
                 params = {"url": f"{url}"}
                 try:
