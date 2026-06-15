@@ -48,29 +48,27 @@ def classplus_login(email, password, org_code=""):
     return {"success": False, "error": "Login failed."}
 
 def classplus_get_courses(token, org_code=""):
+    import cloudscraper
     base_url = "https://api.classplusapp.com/v2"
     url = f"{base_url}/courses"
-    
-    ctx = ssl.create_default_context()
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
     
     headers = {
         'User-Agent': 'okhttp/4.9.1',
         'x-access-token': token,
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'api-version': '50'
     }
     if org_code:
         headers['orgcode'] = org_code
         
     try:
-        req = urllib.request.Request(url, headers=headers)
-        with urllib.request.urlopen(req, context=ctx, timeout=10) as res:
-            if res.status == 200:
-                resp_json = json.loads(res.read().decode('utf-8'))
-                courses = resp_json.get('data', {}).get('courses', [])
-                if courses:
-                    return {"success": True, "courses": courses}
+        scraper = cloudscraper.create_scraper()
+        res = scraper.get(url, headers=headers, timeout=15)
+        if res.status_code == 200:
+            resp_json = res.json()
+            courses = resp_json.get('data', {}).get('courses', [])
+            if courses:
+                return {"success": True, "courses": courses}
     except Exception as e:
         pass
             
