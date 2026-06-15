@@ -49,7 +49,7 @@ def classplus_login(email, password, org_code=""):
 
 def classplus_get_courses(token, org_code=""):
     base_url = "https://api.classplusapp.com/v2"
-    url = f"{base_url}/users/courses?type=1&page=1"
+    url = f"{base_url}/courses"
     
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
