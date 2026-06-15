@@ -1107,6 +1107,21 @@ async def txt_handler(bot: Client, m: Message):
         channel_id = m.chat.id
     else:
         channel_id = raw_text7    
+
+    await editable.edit(f"**Enter 𝐏𝐖/𝐂𝐖/𝐂𝐏 Working Token For 𝐌𝐏𝐃 𝐔𝐑𝐋 or send /d**\n\n<blockquote>If you are downloading Classplus, send your JWT token here!</blockquote>")
+    try:
+        input8: Message = await bot.listen(editable.chat.id, timeout=20)
+        token_text = input8.text
+        await input8.delete(True)
+    except asyncio.TimeoutError:
+        token_text = '/d'
+
+    if token_text != '/d':
+        global cwtoken, cptoken, pwtoken
+        cwtoken = token_text
+        cptoken = token_text
+        pwtoken = token_text
+
     await editable.delete()
 
     try:
