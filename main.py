@@ -1460,6 +1460,44 @@ async def txt_handler(bot: Client, m: Message):
         await bot.send_message(m.chat.id, f"<blockquote><b>✅ Your Task is completed, please check your Set Channel📱</b></blockquote>")
 
 import appx_api
+import classplus_api
+import base64
+import json
+
+@bot.on_message(filters.regex(r"^eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$") & filters.private)
+async def handle_classplus_token_testing(client, message: Message):
+    token = message.text.strip()
+    try:
+        msg = await message.reply_text("🔄 Processing ClassPlus Token...")
+        
+        payload_b64 = token.split('.')[1]
+        payload_b64 = payload_b64.replace('-', '+').replace('_', '/')
+        payload_b64 += "=" * ((4 - len(payload_b64) % 4) % 4)
+        payload = json.loads(base64.b64decode(payload_b64).decode('utf-8'))
+        
+        org_code = payload.get("orgCode", "UNKNOWN")
+        
+        courses_resp = classplus_api.classplus_get_courses(token, org_code)
+        
+        out_str = f"**ClassPlus Login Successful ✅**\n\n"
+        out_str += f"**ORG : {org_code}**\n\n"
+        out_str += f"`{token}`\n\n"
+        out_str += f"**BATCH ID ➤ BATCH NAME**\n\n"
+        
+        if courses_resp.get("success"):
+            courses = courses_resp.get("courses", [])
+            for c in courses:
+                c_id = c.get("id")
+                c_name = c.get("name") or "Unknown Batch"
+                out_str += f"`{c_id}` - **{c_name}**\n\n"
+        else:
+            out_str += "No courses found or failed to fetch courses.\n"
+            
+        await msg.edit_text(out_str, disable_web_page_preview=True)
+    except Exception as e:
+        await message.reply_text(f"❌ Error processing token: {str(e)}")
+
+
 @bot.on_message(filters.regex(r"^\s*https?://.*\*.*\*\s*") & filters.private)
 async def handle_appx_login_testing(client, message: Message):
     text = message.text.strip()
