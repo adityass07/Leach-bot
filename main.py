@@ -35,7 +35,7 @@ def run_web():
     port = int(os.environ.get("PORT", 10000))
     app_web.run(host="0.0.0.0", port=port)
 
-# threading.Thread(target=run_web).start()
+threading.Thread(target=run_web).start()
 from aiohttp import ClientSession
 from subprocess import getstatusoutput
 from pytube import YouTube
