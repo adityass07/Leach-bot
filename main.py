@@ -1495,7 +1495,10 @@ async def handle_classplus_token_testing(client, message: Message):
             
         await msg.edit_text(out_str, disable_web_page_preview=True)
     except Exception as e:
-        await message.reply_text(f"❌ Error processing token: {str(e)}")
+        if "MESSAGE_NOT_MODIFIED" in str(e):
+            pass
+        else:
+            await message.reply_text(f"❌ Error processing token: {str(e)}")
 
 
 @bot.on_message(filters.regex(r"^\s*https?://.*\*.*\*\s*") & filters.private)
