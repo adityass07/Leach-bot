@@ -35,7 +35,7 @@ def run_web():
     port = int(os.environ.get("PORT", 10000))
     app_web.run(host="0.0.0.0", port=port)
 
-threading.Thread(target=run_web).start()
+# threading.Thread(target=run_web).start()
 from aiohttp import ClientSession
 from subprocess import getstatusoutput
 from pytube import YouTube
@@ -99,6 +99,7 @@ image_urls = [
 ]
 
 @bot.on_message(filters.command("addauth") & filters.private)
+    print(f"Received message: {message.text}")
 async def add_auth_user(client: Client, message: Message):
     if message.chat.id != OWNER:
         return 
@@ -114,6 +115,7 @@ async def add_auth_user(client: Client, message: Message):
         await message.reply_text("**Please provide a valid user ID.**")
 
 @bot.on_message(filters.command("users") & filters.private)
+    print(f"Received message: {message.text}")
 async def list_auth_users(client: Client, message: Message):
     if message.chat.id != OWNER:
         return
@@ -122,6 +124,7 @@ async def list_auth_users(client: Client, message: Message):
     await message.reply_text(f"**Authorized Users:**\n{user_list}")
 
 @bot.on_message(filters.command("rmauth") & filters.private)
+    print(f"Received message: {message.text}")
 async def remove_auth_user(client: Client, message: Message):
     if message.chat.id != OWNER:
         return
@@ -139,6 +142,7 @@ async def remove_auth_user(client: Client, message: Message):
 
 
 @bot.on_message(filters.command("broadcast") & filters.private)
+    print(f"Received message: {message.text}")
 async def broadcast_handler(client: Client, message: Message):
     if message.chat.id != OWNER:
         return
@@ -187,6 +191,7 @@ async def broadcast_handler(client: Client, message: Message):
     await message.reply_text(f"<b>Broadcast complete!</b>\n<blockquote><b>✅ Success: {success}\n❎ Failed: {fail}</b></blockquote>")
 
 @bot.on_message(filters.command("broadusers") & filters.private)
+    print(f"Received message: {message.text}")
 async def broadusers_handler(client: Client, message: Message):
     if message.chat.id != OWNER:
         return
@@ -214,6 +219,7 @@ async def broadusers_handler(client: Client, message: Message):
     
         
 @bot.on_message(filters.command("cookies") & filters.private)
+    print(f"Received message: {message.text}")
 async def cookies_handler(client: Client, m: Message):
     editable = await m.reply_text(
         "**Please upload the YouTube Cookies file (.txt format).**",
@@ -250,6 +256,7 @@ async def cookies_handler(client: Client, m: Message):
         await m.reply_text(f"__**Failed Reason**__\n<blockquote>{str(e)}</blockquote>")
 
 @bot.on_message(filters.command(["t2t"]))
+    print(f"Received message: {message.text}")
 async def text_to_txt(client, message: Message):
     user_id = str(message.from_user.id)
     # Inform the user to send the text data and its desired file name
@@ -286,6 +293,7 @@ UPLOAD_FOLDER = '/path/to/upload/folder'
 EDITED_FILE_PATH = '/path/to/save/edited_output.txt'
 
 @bot.on_message(filters.command(["y2t"]))
+    print(f"Received message: {message.text}")
 async def youtube_to_txt(client, message: Message):
     user_id = str(message.from_user.id)
     
@@ -349,6 +357,7 @@ async def youtube_to_txt(client, message: Message):
     os.remove(txt_file)
 
 @bot.on_message(filters.command(["ytm"]))
+    print(f"Received message: {message.text}")
 async def txt_handler(bot: Client, m: Message):
     global processing_request, cancel_requested, cancel_message
     processing_request = True
@@ -451,6 +460,7 @@ async def txt_handler(bot: Client, m: Message):
 
 m_file_path= "main.py"
 @bot.on_message(filters.command("getcookies") & filters.private)
+    print(f"Received message: {message.text}")
 async def getcookies_handler(client: Client, m: Message):
     try:
         # Send the cookies file to the user
@@ -462,6 +472,7 @@ async def getcookies_handler(client: Client, m: Message):
     except Exception as e:
         await m.reply_text(f"⚠️ An error occurred: {str(e)}")     
 @bot.on_message(filters.command("mfile") & filters.private)
+    print(f"Received message: {message.text}")
 async def getcookies_handler(client: Client, m: Message):
     try:
         await client.send_document(
@@ -473,6 +484,7 @@ async def getcookies_handler(client: Client, m: Message):
         await m.reply_text(f"⚠️ An error occurred: {str(e)}")
 
 @bot.on_message(filters.command("caption") & filters.private)
+    print(f"Received message: {message.text}")
 async def caption_handler(client: Client, m: Message):
     global caption
     editable = await m.reply_text("**Caption Style**\n\n<b>01 •Send /d for Default Caption Style.\n02. •Send /simple for Simple Caption Style.</b>")
@@ -485,6 +497,7 @@ async def caption_handler(client: Client, m: Message):
     await inputcap.delete(True)
 
 @bot.on_message(filters.command("vidwatermark") & filters.private)
+    print(f"Received message: {message.text}")
 async def vidwatermark_handler(client: Client, m: Message):
     global vidwatermark
     editable = await m.reply_text("**Send Video Watermark text, else Send /d**")
@@ -497,6 +510,7 @@ async def vidwatermark_handler(client: Client, m: Message):
     await input8.delete(True)
 
 @bot.on_message(filters.command("topic") & filters.private)
+    print(f"Received message: {message.text}")
 async def topic_handler(client: Client, m: Message):
     global topic
     editable = await m.reply_text("**If you want to topic wise uploader : send `yes` or send /d**\n\n<blockquote><b>Topic fetch from (bracket) in title</b></blockquote>")
@@ -509,6 +523,7 @@ async def topic_handler(client: Client, m: Message):
     await input.delete(True)
 
 @bot.on_message(filters.command("token") & filters.private)
+    print(f"Received message: {message.text}")
 async def token_handler(client: Client, m: Message):
     global cwtoken, cptoken, pwtoken
     editable = await m.reply_text("<b>Enter 𝐏𝐖/𝐂𝐖/𝐂𝐏 Working Token For 𝐌𝐏𝐃 𝐔𝐑𝐋 or send /d</b>")
@@ -527,6 +542,7 @@ async def token_handler(client: Client, m: Message):
     await input.delete(True)
         
 @bot.on_message(filters.command(["reset"]))
+    print(f"Received message: {message.text}")
 async def restart_handler(_, m):
     if m.chat.id != OWNER:
         return
@@ -535,6 +551,7 @@ async def restart_handler(_, m):
         os.execl(sys.executable, sys.executable, *sys.argv)
 
 @bot.on_message(filters.command("stop") & filters.private)
+    print(f"Received message: {message.text}")
 async def cancel_handler(client: Client, m: Message):
     global processing_request, cancel_requested
     if m.chat.id not in AUTH_USERS:
@@ -556,6 +573,7 @@ async def cancel_handler(client: Client, m: Message):
             await m.reply_text("**⚡ No active process to cancel.**")
 
 @bot.on_message(filters.command("start"))
+    print(f"Received message: {message.text}")
 async def start(bot, m: Message):
     user_id = m.chat.id
     if user_id not in TOTAL_USERS:
@@ -891,6 +909,7 @@ async def y2t_button(client, callback_query):
   )
          
 @bot.on_message(filters.command(["id"]))
+    print(f"Received message: {message.text}")
 async def id_command(client, message: Message):
     keyboard = InlineKeyboardMarkup([[InlineKeyboardButton(text="Send to Owner", url=f"tg://openmessage?user_id={OWNER}")]])
     chat_id = message.chat.id
@@ -902,6 +921,7 @@ async def id_command(client, message: Message):
         await message.reply_text(text, reply_markup=keyboard)
 
 @bot.on_message(filters.private & filters.command(["info"]))
+    print(f"Received message: {message.text}")
 async def info(bot: Client, update: Message):
     
     text = (
@@ -923,6 +943,7 @@ async def info(bot: Client, update: Message):
 
 
 @bot.on_message(filters.command(["logs"]))
+    print(f"Received message: {message.text}")
 async def send_logs(client: Client, m: Message):  # Correct parameter name
     try:
         with open("logs.txt", "rb") as file:
@@ -933,6 +954,7 @@ async def send_logs(client: Client, m: Message):  # Correct parameter name
         await m.reply_text(f"**Error sending logs:**\n<blockquote>{e}</blockquote>")
 
 @bot.on_message(filters.command(["drm"]) )
+    print(f"Received message: {message.text}")
 async def txt_handler(bot: Client, m: Message):  
     global processing_request, cancel_requested, cancel_message, caption, vidwatermark, cwtoken, pwtoken, cptoken, topic
     processing_request = True
@@ -1165,12 +1187,6 @@ async def txt_handler(bot: Client, m: Message):
                 url = mpd
                 keys_string = " ".join([f"--key {key}" for key in keys])
 
-            elif "classplusapp" in url:
-                signed_api = f"https://covercel.vercel.app/extract_keys?url={url}@bots_updatee&user_id=7793257011"
-                response = requests.get(signed_api, timeout=20)
-                url = response.text.strip()
-                url = response.json()['url']  
-                
             elif "tencdn.classplusapp" in url:
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{cptoken}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
@@ -1185,6 +1201,15 @@ async def txt_handler(bot: Client, m: Message):
                 params = {"url": f"{url}"}
                 response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
                 url   = response.json()['url']
+
+            elif "classplusapp" in url:
+                try:
+                    signed_api = f"https://covercel.vercel.app/extract_keys?url={url}@bots_updatee&user_id=7793257011"
+                    response = requests.get(signed_api, timeout=20)
+                    url = response.json()['url']
+                except Exception:
+                    pass
+
 
             if "edge.api.brightcove.com" in url:
                 bcov = f'bcov_auth={cwtoken}'
@@ -1465,6 +1490,7 @@ import base64
 import json
 
 @bot.on_message(filters.regex(r"^eyJ[a-zA-Z0-9_-]+\.eyJ[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+$") & filters.private)
+    print(f"Received message: {message.text}")
 async def handle_classplus_token_testing(client, message: Message):
     token = message.text.strip()
     try:
@@ -1502,6 +1528,7 @@ async def handle_classplus_token_testing(client, message: Message):
 
 
 @bot.on_message(filters.regex(r"^\s*,?\s*(\d+)\s*$") & filters.private)
+    print(f"Received message: {message.text}")
 async def handle_classplus_batch_extraction(client, message: Message):
     batch_id = message.matches[0].group(1)
     
@@ -1548,6 +1575,7 @@ async def handle_classplus_batch_extraction(client, message: Message):
         await msg.edit_text(f"❌ Error during extraction: {str(e)}")
 
 @bot.on_message(filters.regex(r"^\s*https?://.*\*.*\*\s*") & filters.private)
+    print(f"Received message: {message.text}")
 async def handle_appx_login_testing(client, message: Message):
     text = message.text.strip()
     try:
@@ -1597,6 +1625,7 @@ async def handle_appx_login_testing(client, message: Message):
         await message.reply_text(f"❌ Error extracting login: {str(e)}")
 
 @bot.on_message(filters.text & filters.private)
+    print(f"Received message: {message.text}")
 async def text_handler(bot: Client, m: Message):
     if m.from_user.is_bot:
         return
@@ -1680,12 +1709,6 @@ async def text_handler(bot: Client, m: Message):
                 url = mpd
                 keys_string = " ".join([f"--key {key}" for key in keys])
 
-            elif "classplusapp" in url:
-                signed_api = f"https://covercel.vercel.app/extract_keys?url={url}@bots_updatee&user_id=7793257011"
-                response = requests.get(signed_api, timeout=20)
-                #url = response.text.strip()
-                url = response.json()['url']  
-
             elif "tencdn.classplusapp" in url:
                 headers = {'host': 'api.classplusapp.com', 'x-access-token': f'{raw_text4}', 'accept-language': 'EN', 'api-version': '18', 'app-version': '1.4.73.2', 'build-number': '35', 'connection': 'Keep-Alive', 'content-type': 'application/json', 'device-details': 'Xiaomi_Redmi 7_SDK-32', 'device-id': 'c28d3cb16bbdac01', 'region': 'IN', 'user-agent': 'Mobile-Android', 'webengage-luid': '00000187-6fe4-5d41-a530-26186858be4c', 'accept-encoding': 'gzip'}
                 params = {"url": f"{url}"}
@@ -1700,6 +1723,14 @@ async def text_handler(bot: Client, m: Message):
                 params = {"url": f"{url}"}
                 response = requests.get('https://api.classplusapp.com/cams/uploader/video/jw-signed-url', headers=headers, params=params)
                 url   = response.json()['url']
+
+            elif "classplusapp" in url:
+                try:
+                    signed_api = f"https://covercel.vercel.app/extract_keys?url={url}@bots_updatee&user_id=7793257011"
+                    response = requests.get(signed_api, timeout=20)
+                    url = response.json()['url']  
+                except Exception:
+                    pass
 
             elif "childId" in url and "parentId" in url:
                 url = f"https://pwplayerrr-3dba7e3fb6a8.herokuapp.com/pw?url={url}&token={pwtoken}"
