@@ -118,9 +118,17 @@ def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_i
                             if not vid_url and item.get('thumbnailUrl'):
                                 vid_url = item.get('thumbnailUrl')
                                 import re
-                                vid_url = re.sub(r'thumbnail\.png$', 'master.m3u8', vid_url)
-                                vid_url = re.sub(r'\.jpeg$', '/master.m3u8', vid_url)
-                                vid_url = re.sub(r'\.jpg$', '/master.m3u8', vid_url)
+                                if 'vod-thumbnail/' in vid_url:
+                                    # Extract uuid from url
+                                    uuid_match = re.search(r'vod-thumbnail/([^/]+)\.(jpeg|jpg|png)$', vid_url)
+                                    if uuid_match:
+                                        uuid = uuid_match.group(1)
+                                        vid_url = f"https://media-cdn.classplusapp.com/alisg-cdn-a.classplusapp.com/{uuid}/master.m3u8"
+                                else:
+                                    vid_url = re.sub(r'thumbnail\.png$', 'master.m3u8', vid_url)
+                                    vid_url = re.sub(r'\.jpeg$', '/master.m3u8', vid_url)
+                                    vid_url = re.sub(r'\.jpg$', '/master.m3u8', vid_url)
+
                             if vid_url: all_links.append(f"{title}:{vid_url}")
                         elif res_type == 3: # PDF/Doc
                             pdf_url = item.get('url')
