@@ -116,7 +116,11 @@ def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_i
                         elif res_type == 2: # Video
                             vid_url = item.get('url')
                             if not vid_url and item.get('thumbnailUrl'):
-                                vid_url = item.get('thumbnailUrl').replace('thumbnail.png', 'master.m3u8')
+                                vid_url = item.get('thumbnailUrl')
+                                import re
+                                vid_url = re.sub(r'thumbnail\.png$', 'master.m3u8', vid_url)
+                                vid_url = re.sub(r'\.jpeg$', '/master.m3u8', vid_url)
+                                vid_url = re.sub(r'\.jpg$', '/master.m3u8', vid_url)
                             if vid_url: all_links.append(f"{title}:{vid_url}")
                         elif res_type == 3: # PDF/Doc
                             pdf_url = item.get('url')
