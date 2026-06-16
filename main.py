@@ -1984,6 +1984,12 @@ async def text_handler(bot: Client, m: Message):
 
     except Exception as e:
         await m.reply_text(str(e))
+    finally:
+        processing_request = False
+        try:
+            os.remove(x)
+        except:
+            pass
 
 #...............…........
 def notify_owner():
