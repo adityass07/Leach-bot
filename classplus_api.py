@@ -91,41 +91,50 @@ def extract_batch_links(token, course_id, org_code="", bot_instance=None, chat_i
     scraper = cloudscraper.create_scraper()
 
     def fetch_folder(folder_id, path_prefix=""):
-        url = f"{base_url}/course/content/get?courseId={course_id}&folderId={folder_id}"
-        try:
-            res = scraper.get(url, headers=headers, timeout=15)
-            if res.status_code == 200:
-                items = res.json().get('data', {}).get('courseContent', [])
-                for item in items:
-                    title = item.get('name', 'Unknown')
-                    res_type = int(item.get('contentType', 0))
-                    item_id = item.get('id')
-                    
-                    if res_type == 1: # Folder
-                        if bot_instance and chat_id:
-                            try:
-                                bot_instance.send_message(chat_id, f"📂 Scanning folder: {title}")
-                            except Exception: pass
-                        fetch_folder(item_id, path_prefix + title + " > ")
-                    elif res_type == 2: # Video
-                        vid_url = item.get('url')
-                        if not vid_url and item.get('thumbnailUrl'):
-                            vid_url = item.get('thumbnailUrl').replace('thumbnail.png', 'master.m3u8')
-                        if vid_url: all_links.append(f"{title}:{vid_url}")
-                    elif res_type == 3: # PDF/Doc
-                        pdf_url = item.get('url')
-                        if pdf_url: all_links.append(f"{title}:{pdf_url}")
-            else:
-                if bot_instance and chat_id:
+        offset = 0
+        limit = 100
+        while True:
+            url = f"{base_url}/course/content/get?courseId={course_id}&folderId={folder_id}&limit={limit}&offset={offset}"
+            try:
+                res = scraper.get(url, headers=headers, timeout=15)
+                if res.status_code == 200:
+                    items = res.json().get('data', {}).get('courseContent', [])
+                    if not items:
+                        break
+                        
+                    for item in items:
+                        title = item.get('name', 'Unknown')
+                        res_type = int(item.get('contentType', 0))
+                        item_id = item.get('id')
+                        
+                        if res_type == 1: # Folder
+                            if bot_instance and chat_id and offset == 0:
+                                try:
+                                    bot_instance.send_message(chat_id, f"📂 Scanning folder: {title}")
+                                except Exception: pass
+                            fetch_folder(item_id, path_prefix + title + " > ")
+                        elif res_type == 2: # Video
+                            vid_url = item.get('url')
+                            if not vid_url and item.get('thumbnailUrl'):
+                                vid_url = item.get('thumbnailUrl').replace('thumbnail.png', 'master.m3u8')
+                            if vid_url: all_links.append(f"{title}:{vid_url}")
+                        elif res_type == 3: # PDF/Doc
+                            pdf_url = item.get('url')
+                            if pdf_url: all_links.append(f"{title}:{pdf_url}")
+                            
+                    offset += limit
+                else:
+                    if bot_instance and chat_id and offset == 0:
+                        try:
+                            bot_instance.send_message(chat_id, f"❌ Classplus API Error: {res.status_code} - {res.text[:50]}")
+                        except Exception: pass
+                    break
+            except Exception as e:
+                if bot_instance and chat_id and offset == 0:
                     try:
-                        bot_instance.send_message(chat_id, f"❌ Classplus API Error: {res.status_code} - {res.text[:50]}")
+                        bot_instance.send_message(chat_id, f"❌ Exception: {str(e)}")
                     except Exception: pass
-        except Exception as e:
-            if bot_instance and chat_id:
-                try:
-                    bot_instance.send_message(chat_id, f"❌ Exception: {str(e)}")
-                except Exception: pass
+                break
 
     fetch_folder("0")
-    return all_links
     return all_links
